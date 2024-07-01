@@ -1,19 +1,22 @@
 package org.eazybyte.com.eazybyteschool.Controller;
 
 import org.eazybyte.com.eazybyteschool.Model.Holiday;
+import org.eazybyte.com.eazybyteschool.Repository.HolidayRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 public class HolidayController {
+
+    @Autowired
+    HolidayRepositoryImpl holidayRepository;
+
 //
 //     USING REQUEST PARAMS FOR FILTERING HOLIDAYS ACCORDING TO THE REQUEST PARAMETERS
 
@@ -53,16 +56,18 @@ public class HolidayController {
             model.addAttribute("festival",true);
         }
 
-        List<Holiday> holidays = Arrays.asList(
-                new Holiday(" Jan 1 ","New Year's Day", Holiday.Type.FESTIVAL),
-                new Holiday(" Oct 31 ","Halloween", Holiday.Type.FESTIVAL),
-                new Holiday(" Nov 24 ","Thanksgiving Day", Holiday.Type.FESTIVAL),
-                new Holiday(" Dec 25 ","Christmas", Holiday.Type.FESTIVAL),
-                new Holiday(" Jan 17 ","Martin Luther King Jr. Day", Holiday.Type.FEDERAL),
-                new Holiday(" July 4 ","Independence Day", Holiday.Type.FEDERAL),
-                new Holiday(" Sep 5 ","Labor Day", Holiday.Type.FEDERAL),
-                new Holiday(" Nov 11 ","Veterans Day", Holiday.Type.FEDERAL)
-        );
+//        List<Holiday> holidays = Arrays.asList(
+//                new Holiday(" Jan 1 ","New Year's Day", Holiday.Type.FESTIVAL),
+//                new Holiday(" Oct 31 ","Halloween", Holiday.Type.FESTIVAL),
+//                new Holiday(" Nov 24 ","Thanksgiving Day", Holiday.Type.FESTIVAL),
+//                new Holiday(" Dec 25 ","Christmas", Holiday.Type.FESTIVAL),
+//                new Holiday(" Jan 17 ","Martin Luther King Jr. Day", Holiday.Type.FEDERAL),
+//                new Holiday(" July 4 ","Independence Day", Holiday.Type.FEDERAL),
+//                new Holiday(" Sep 5 ","Labor Day", Holiday.Type.FEDERAL),
+//                new Holiday(" Nov 11 ","Veterans Day", Holiday.Type.FEDERAL)
+//        );
+
+        List<Holiday> holidays = holidayRepository.findAllHolidays();
 
         Holiday.Type[] types = Holiday.Type.values();
         for(Holiday.Type type : types) {

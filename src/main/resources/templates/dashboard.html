@@ -3,7 +3,8 @@ Author: W3layouts
 Author URL: http://w3layouts.com
 -->
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <!-- Required meta tags -->
@@ -13,7 +14,7 @@ Author URL: http://w3layouts.com
     <!-- Google fonts -->
     <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Template CSS Style link -->
-    <link rel="stylesheet" href="../assets/css/style-starter.css">
+    <link rel="stylesheet" href="assets/css/style-starter.css">
 </head>
 
 <body>
@@ -26,58 +27,52 @@ Author URL: http://w3layouts.com
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-4 pb-sm-4">
-            <h4 class="inner-text-title pt-5">Holidays</h4>
+            <h4 class="inner-text-title pt-5">Dashboard</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a th:href="@{/home}">Home</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Holidays</li>
+                <li class="active"><i class="fas fa-angle-right"></i>Dashboard</li>
             </ul>
         </div>
     </div>
 </section>
 <!-- //inner banner -->
 
-<!-- Holidays -->
-<section class="w3l-timeline-1 py-5">
-    <div class="container py-lg-5 py-4">
-        <div class="title-heading-w3 text-center mb-sm-5 mb-4">
-            <h5 class="title-small">Eazy School</h5>
-            <h3 class="title-style">Awesome Holidays</h3>
+<!-- welcome block -->
+<section class="w3l-contact py-5" id="contact">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+            <h3 class="title-style" th:text="${'Welcome - ' + username}"></h3>
+            <p class="" th:text="${'You logged in as - ' + role}"></p>
         </div>
-        <div class="row">
-            <div class="col-lg-6" th:if="${festival} == true">
-                <h5 class="sub-title-timeline"><i class="fas fa-snowman"></i> Festival Holidays</h5>
-                <div class="timeline">
-                    <div class="timeline">
-                        <div th:each="holiday : ${FESTIVAL}" class="column">
-                            <div class="title">
-                                <h2 th:text="${holiday.reason}"></h2>
-                            </div>
-                            <div class="description">
-                                <h6 th:text="${holiday.day}" class="fas fa-calendar-alt"><i class="fas fa-calendar-alt"></i></h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-6 mt-lg-0 mt-4" th:if="${federal} == true">
-                <h5 class="sub-title-timeline"><i class="fas fa-flag-usa"></i> Federal Holidays </h5>
-                <div class="timeline">
-                    <div th:each="holiday : ${FEDERAL}" class="column">
-                        <div class="title">
-                            <h2 th:text="${holiday.reason}"></h2>
+    </div>
+</section>
+<!-- //welcome block -->
+
+<div class="container py-md-5 py-4">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row m-t-25">
+                <div class="col-sm-6 col-lg-3" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/displayMessages}">
+                        <div class="overview-item overview-item--c3">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="fas fa-envelope-open-text"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h2>Messages</h2>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="description">
-                            <h6 th:text="${holiday.day}" class="fas fa-calendar-alt"><i class="fas fa-calendar-alt"></i></h6>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</section>
-
-<!-- // Holidays -->
+</div>
 
 <!-- footer block -->
 <div th:replace="~{footer :: footer}">...</div>
@@ -111,15 +106,11 @@ Author URL: http://w3layouts.com
 <!-- //move top -->
 
 <!-- common jquery plugin -->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
 
-<!-- counter-->
-<script src="../assets/js/counter.js"></script>
-<!-- //counter-->
-
 <!-- theme switch js (light and dark)-->
-<script src="../assets/js/theme-change.js"></script>
+<script src="assets/js/theme-change.js"></script>
 <!-- //theme switch js (light and dark)-->
 
 <!-- MENU-JS -->
@@ -162,7 +153,7 @@ Author URL: http://w3layouts.com
 <!-- //disable body scroll which navbar is in active -->
 
 <!-- bootstrap -->
-<script src="../assets/js/bootstrap.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
