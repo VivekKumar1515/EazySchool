@@ -14,6 +14,7 @@ public class ContactService {
 
     ContactRepositoryImpl repo;
 
+    @Autowired
     private ContactService(ContactRepositoryImpl repo) {
         this.repo = repo;
     }
