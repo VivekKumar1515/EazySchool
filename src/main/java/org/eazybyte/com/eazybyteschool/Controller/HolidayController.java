@@ -1,7 +1,7 @@
 package org.eazybyte.com.eazybyteschool.Controller;
 
 import org.eazybyte.com.eazybyteschool.Model.Holiday;
-import org.eazybyte.com.eazybyteschool.Repository.HolidayRepositoryImpl;
+import org.eazybyte.com.eazybyteschool.Repository.HolidayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class HolidayController {
+    public final HolidayRepository holidayRepository;
 
-    @Autowired
-    HolidayRepositoryImpl holidayRepository;
+    public HolidayController(HolidayRepository holidayRepository) {
+        this.holidayRepository = holidayRepository;
+    }
+
 
 //
 //     USING REQUEST PARAMS FOR FILTERING HOLIDAYS ACCORDING TO THE REQUEST PARAMETERS
@@ -67,12 +71,13 @@ public class HolidayController {
 //                new Holiday(" Nov 11 ","Veterans Day", Holiday.Type.FEDERAL)
 //        );
 
-        List<Holiday> holidays = holidayRepository.findAllHolidays();
+        Iterable<Holiday> holidays = holidayRepository.findAll();
+        List<Holiday> holidayList = StreamSupport.stream(holidays.spliterator(), false).collect(Collectors.toList());
 
         Holiday.Type[] types = Holiday.Type.values();
         for(Holiday.Type type : types) {
             model.addAttribute(type.toString(),
-                    holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList()));
+                    holidayList.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList()));
         }
 
         return "holiday.html";

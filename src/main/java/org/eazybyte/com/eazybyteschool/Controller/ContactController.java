@@ -23,14 +23,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @Controller
 public class ContactController {
 
-    Logger logger = Logger.getLogger(this.getClass().getName());
-
-    final ContactService contactService;
 
     @Autowired
-    public ContactController(ContactService contactService) {
-        this.contactService = contactService;
-    }
+    ContactService contactService;
 
     @RequestMapping("/contact")
     public String displayContactPage(Model model) {

@@ -1,37 +1,46 @@
 package org.eazybyte.com.eazybyteschool.Service;
 
+import org.eazybyte.com.eazybyteschool.Constants.EazyByteContants;
 import org.eazybyte.com.eazybyteschool.Model.Contact;
 import org.eazybyte.com.eazybyteschool.Repository.ContactRepository;
-import org.eazybyte.com.eazybyteschool.Repository.ContactRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactService {
 
 
-    ContactRepositoryImpl repo;
+    ContactRepository repo;
 
     @Autowired
-    private ContactService(ContactRepositoryImpl repo) {
+    public ContactService(ContactRepository repo) {
         this.repo = repo;
     }
 
     public boolean saveMessageDetails(Contact contact) {
-        boolean result = repo.saveMessage(contact);
-        return result;
+        contact.setStatus(EazyByteContants.OPEN);
+        contact.setCreatedBy(EazyByteContants.ANONYMOUS);
+        contact.setCreatedAt(LocalDateTime.now());
+        repo.save(contact);
+        return true;
     }
 
     public List<Contact> getMessages() {
-        List<Contact> contacts = repo.getContacts();
-        return contacts;
+        return repo.findByStatus(EazyByteContants.OPEN);
     }
 
     public boolean closeMessage(int contactId, String name) {
-        boolean result = repo.closeMessage(contactId, name);
-
-        return result;
+        Optional<Contact> contact = repo.findById(contactId);
+        if(contact.isPresent()) {
+            contact.get().setUpdatedBy(name);
+            contact.get().setUpdatedAt(LocalDateTime.now());
+            contact.get().setStatus(EazyByteContants.CLOSE);
+        }
+        Contact savedContact = repo.save(contact.get());
+        return savedContact != null? true : false;
     }
 }
