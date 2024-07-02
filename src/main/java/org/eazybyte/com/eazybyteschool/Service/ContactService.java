@@ -23,8 +23,6 @@ public class ContactService {
 
     public boolean saveMessageDetails(Contact contact) {
         contact.setStatus(EazyByteContants.OPEN);
-        contact.setCreatedBy(EazyByteContants.ANONYMOUS);
-        contact.setCreatedAt(LocalDateTime.now());
         repo.save(contact);
         return true;
     }
@@ -36,8 +34,6 @@ public class ContactService {
     public boolean closeMessage(int contactId, String name) {
         Optional<Contact> contact = repo.findById(contactId);
         if(contact.isPresent()) {
-            contact.get().setUpdatedBy(name);
-            contact.get().setUpdatedAt(LocalDateTime.now());
             contact.get().setStatus(EazyByteContants.CLOSE);
         }
         Contact savedContact = repo.save(contact.get());
