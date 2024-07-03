@@ -2,6 +2,8 @@ package org.eazybyte.com.eazybyteschool.Controller;
 
 import jakarta.validation.Valid;
 import org.eazybyte.com.eazybyteschool.Model.Person;
+import org.eazybyte.com.eazybyteschool.Service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,6 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "public")
 public class PublicController {
+
+    PersonService personService;
+
+    @Autowired
+    public PublicController(PersonService personService) {
+        this.personService = personService;
+    }
 
     @RequestMapping(value = "/register")
     public String registerUser(Model model) {
@@ -26,6 +35,7 @@ public class PublicController {
         if(errors.hasErrors()) {
             return "register.html";
         } else {
+            personService.savePerson(person);
             return "redirect:/login?register=true";
         }
     }

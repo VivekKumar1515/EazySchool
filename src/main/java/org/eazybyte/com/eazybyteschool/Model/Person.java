@@ -7,9 +7,10 @@ import org.eazybyte.com.eazybyteschool.Annotations.FieldsMatchValidator;
 import org.eazybyte.com.eazybyteschool.Annotations.PasswordValidator;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.management.relation.Role;
+
 @Data
 @Entity
-@Table(name = "person")
 @FieldsMatchValidator.List({
         @FieldsMatchValidator(
                 field = "email",
@@ -22,9 +23,9 @@ import org.hibernate.annotations.GenericGenerator;
                 message = "passwords do not match"
         )
 })
-public class Person {
-    @Id
+public class Person extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @Id
     @GenericGenerator(name = "native")
     private int personId;
 
@@ -42,9 +43,22 @@ public class Person {
 
     @NotBlank(message = "field cannot be empty")
     @Email
+    @Transient
     private String confirmEmail;
 
+    @NotBlank(message = "field cannot be empty")
     @PasswordValidator()
     private String pwd;
+
+    @NotBlank(message = "field cannot be empty")
+    @Transient
     private String confirmPwd;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Roles.class)
+    @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
+    private Roles role;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Address.class)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = false)
+    private Address address;
 }
