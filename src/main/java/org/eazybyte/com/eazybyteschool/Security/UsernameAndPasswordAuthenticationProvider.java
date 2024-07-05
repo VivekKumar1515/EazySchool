@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,12 +23,15 @@ public class UsernameAndPasswordAuthenticationProvider implements Authentication
     @Autowired
     PersonRepository personRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
         Person person = personRepository.findByEmail(email);
-        if(person != null && person.getPersonId() > 0) {
+        if(person != null && person.getPersonId() > 0 && passwordEncoder.matches(password, person.getPwd())) {
             return new UsernamePasswordAuthenticationToken(person.getName(), person.getPwd(), getGrantedAuthorities(person.getRole()));
         } else {
             throw new BadCredentialsException("Bad credentials");

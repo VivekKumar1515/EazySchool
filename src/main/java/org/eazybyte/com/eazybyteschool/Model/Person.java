@@ -59,6 +59,6 @@ public class Person extends BaseEntity {
     private Roles role;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Address.class)
-    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = false)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = true)
     private Address address;
 }
