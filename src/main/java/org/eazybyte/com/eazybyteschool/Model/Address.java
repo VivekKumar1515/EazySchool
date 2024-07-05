@@ -10,7 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
-public class Address {
+public class Address extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native")

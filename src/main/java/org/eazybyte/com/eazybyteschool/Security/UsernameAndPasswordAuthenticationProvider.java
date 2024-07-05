@@ -32,7 +32,7 @@ public class UsernameAndPasswordAuthenticationProvider implements Authentication
         String password = authentication.getCredentials().toString();
         Person person = personRepository.findByEmail(email);
         if(person != null && person.getPersonId() > 0 && passwordEncoder.matches(password, person.getPwd())) {
-            return new UsernamePasswordAuthenticationToken(person.getName(), person.getPwd(), getGrantedAuthorities(person.getRole()));
+            return new UsernamePasswordAuthenticationToken(email, null, getGrantedAuthorities(person.getRole()));
         } else {
             throw new BadCredentialsException("Bad credentials");
         }
