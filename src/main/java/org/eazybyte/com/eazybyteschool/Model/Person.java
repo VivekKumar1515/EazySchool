@@ -10,6 +10,7 @@ import org.eazybyte.com.eazybyteschool.Annotations.PasswordValidator;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.management.relation.Role;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -68,4 +69,12 @@ public class Person extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = true, targetEntity = EazyClass.class)
     @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
     private EazyClass eazyclass;
+
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Courses.class, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "Student_Courses", joinColumns = {
+            @JoinColumn(name = "person_id", referencedColumnName = "personId"),
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "course_id", referencedColumnName = "courseId")
+    })
+    private Set<Courses> enrolledCourses;
 }
