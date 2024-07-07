@@ -1,9 +1,11 @@
 package org.eazybyte.com.eazybyteschool.Controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.eazybyte.com.eazybyteschool.Model.Courses;
 import org.eazybyte.com.eazybyteschool.Model.EazyClass;
 import org.eazybyte.com.eazybyteschool.Model.Person;
 import org.eazybyte.com.eazybyteschool.Repository.ClassesRepository;
+import org.eazybyte.com.eazybyteschool.Repository.CoursesRepository;
 import org.eazybyte.com.eazybyteschool.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -25,6 +27,9 @@ public class AdminController {
 
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    CoursesRepository coursesRepository;
 
 
     @RequestMapping("/displayClasses")
@@ -103,4 +108,61 @@ public class AdminController {
 
         return "redirect:/REDACTED/displayStudents?classId=" + eazyClass.getClassId();
     }
+
+    @RequestMapping(value = "/displayCourses")
+    public String displayCourses(Model model, HttpSession session) {
+        List<Courses> courses = coursesRepository.findAll();
+        Courses course = new Courses();
+        model.addAttribute("courses", courses);
+        model.addAttribute("course", course);
+        return "courses_REDACTED.html";
+    }
+
+    @RequestMapping(value = "/addNewCourse", method = RequestMethod.POST)
+    public String addNewCourse(@ModelAttribute(value = "course") Courses course, Model model, HttpSession session) {
+        coursesRepository.save(course);
+        return "redirect:/REDACTED/displayCourses";
+    }
+
+    @RequestMapping(value = "/viewStudents")
+    public String viewStudents(@RequestParam(value = "id") int courseId, Model model, HttpSession session, @RequestParam(value = "error", required = false) Integer error) {
+        Courses course = coursesRepository.findById(courseId).get();
+        Person person = new Person();
+        model.addAttribute("person", person);
+        model.addAttribute("courses", course);
+        session.setAttribute("course", course);
+        if(error != null && error == 1) {
+            model.addAttribute("errorMessage", "Error: Invalid Email Address");
+        }
+        return "courses_student.html";
+    }
+
+    @RequestMapping(value = "addStudentToCourse", method = RequestMethod.POST)
+    public String addStudentToCourse(@ModelAttribute(value = "person") Person Student, Model model, HttpSession session) {
+        Courses course = (Courses) session.getAttribute("course");
+        course.getStudents().add(Student);
+        coursesRepository.save(course);
+
+        Person person = personRepository.findByEmail(Student.getEmail());
+        if(person == null || !(person.getPersonId() > 0)) {
+            return "redirect:/REDACTED/viewStudents?id=" + course.getCourseId() + "&error=1";
+        }
+        person.getEnrolledCourses().add(course);
+        personRepository.save(person);
+        session.setAttribute("course", course);
+        return "redirect:/REDACTED/viewStudents?id=" + course.getCourseId();
+    }
+    @RequestMapping(value = "deleteStudentFromCourse")
+    public String deleteStudentFromCourse(@RequestParam(value = "personId") int personId, Model model, HttpSession session) {
+        Courses course = (Courses) session.getAttribute("course");
+        Person person = personRepository.findById(personId).get();
+        course.getStudents().remove(person);
+        person.getEnrolledCourses().remove(course);
+        personRepository.save(person);
+        coursesRepository.save(course);
+        session.setAttribute("course", course);
+
+        return "redirect:/REDACTED/viewStudents?id=" + course.getCourseId();
+    }
+
 }
