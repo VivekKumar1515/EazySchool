@@ -19,17 +19,18 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg", "/displayMessages", "/closeMsg", "/public/**", "/updateProfile"))
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg", "/displayMessages", "/closeMsg", "/public/**", "/updateProfile", "/REDACTED/addNewClass", "/REDACTED/deleteClass", "/REDACTED/displayStudent"))
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/holidays/**").permitAll()
                         .requestMatchers("/contact").permitAll()
                         .requestMatchers("/displayMessages").hasRole("ADMIN")
+                        .requestMatchers("/REDACTED/**").hasRole("ADMIN")
                         .requestMatchers("/saveMsg").permitAll()
                         .requestMatchers("/courses").permitAll()
                         .requestMatchers("/about").permitAll()
-                        .requestMatchers("/displayProfile").permitAll()
-                        .requestMatchers("updateProfile").permitAll()
+                        .requestMatchers("/displayProfile").authenticated()
+                        .requestMatchers("updateProfile").authenticated()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/closeMsg/**").hasRole("ADMIN")
                         .requestMatchers("/logout").permitAll()

@@ -3,13 +3,16 @@ package org.eazybyte.com.eazybyteschool.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.eazybyte.com.eazybyteschool.Annotations.FieldsMatchValidator;
 import org.eazybyte.com.eazybyteschool.Annotations.PasswordValidator;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.management.relation.Role;
 
-@Data
+@Setter
+@Getter
 @Entity
 @FieldsMatchValidator.List({
         @FieldsMatchValidator(
@@ -61,4 +64,8 @@ public class Person extends BaseEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Address.class)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = true)
     private Address address;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true, targetEntity = EazyClass.class)
+    @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
+    private EazyClass eazyclass;
 }
