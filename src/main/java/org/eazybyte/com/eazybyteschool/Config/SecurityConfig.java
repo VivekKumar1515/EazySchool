@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/displayMessages").hasRole("ADMIN")
                         .requestMatchers("/REDACTED/**").hasRole("ADMIN")
                         .requestMatchers("/saveMsg").permitAll()
+                        .requestMatchers("/student/**").hasRole("STUDENT")
                         .requestMatchers("/courses").permitAll()
                         .requestMatchers("/about").permitAll()
                         .requestMatchers("/displayProfile").authenticated()
