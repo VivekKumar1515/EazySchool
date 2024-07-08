@@ -1,12 +1,15 @@
 package org.eazybyte.com.eazybyteschool.Controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.XSlf4j;
 import org.eazybyte.com.eazybyteschool.Model.Contact;
 import org.eazybyte.com.eazybyteschool.Service.ContactService;
 import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,23 +57,29 @@ public class ContactController {
         return "redirect:/contact";
     }
 
-    @RequestMapping(value="/displayMessages", method = GET)
-    public ModelAndView displayMessages(ModelAndView modelAndView, Errors errors) {
-        if(errors.hasErrors()){
-            log.error("Contact form validation failed due to : " + errors.toString());
+    @RequestMapping(value="/displayMessages/page/{page}", method = GET)
+    public String displayMessages(Model model, @PathVariable(value = "page") int pageNum, @RequestParam(value = "sortField") String sortField, @RequestParam(value = "sortDir") String sortDir, HttpSession session) {
+        Page<Contact> msgPage = contactService.findMsgWithOpenStatus(pageNum, sortField, sortDir);
+        List<Contact> msgList = msgPage.getContent();
+        if(pageNum > msgPage.getTotalPages()+1) {
+            return "redirect:/displayMessages/page/1?sortField=" + sortField + "&sortDir=" + sortDir;
         }
+        model.addAttribute("totalPages", msgPage.getTotalPages());
+        model.addAttribute("currentPage", msgPage.getNumber()+1);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("contactMsgs", msgList);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        session.setAttribute("sortField", sortField);
+        session.setAttribute("sortDir", sortDir);
 
-        List<Contact> contacts = contactService.getMessages();
-        modelAndView.addObject("contactMsgs", contacts);
-        modelAndView.setViewName("messages.html");
-
-        return modelAndView;
+        return "messages.html";
     }
 
     @RequestMapping(value = "/closeMsg", method= GET)
-    public String closeMsg(@RequestParam(value = "id") int id, Authentication authentication) {
+    public String closeMsg(@RequestParam(value = "id") int id, Authentication authentication, HttpSession session) {
         contactService.closeMessage(id, authentication.getName());
 
-        return "redirect:/displayMessages";
+        return "redirect:/displayMessages/page/1?sortField=" + session.getAttribute("sortField") + "&sortDir=" + session.getAttribute("sortDir");
     }
 }

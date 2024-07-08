@@ -4,9 +4,12 @@ import org.eazybyte.com.eazybyteschool.Constants.EazyByteContants;
 import org.eazybyte.com.eazybyteschool.Model.Contact;
 import org.eazybyte.com.eazybyteschool.Repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,11 +17,13 @@ import java.util.Optional;
 public class ContactService {
 
 
+    private final ContactRepository contactRepository;
     ContactRepository repo;
 
     @Autowired
-    public ContactService(ContactRepository repo) {
+    public ContactService(ContactRepository repo, ContactRepository contactRepository) {
         this.repo = repo;
+        this.contactRepository = contactRepository;
     }
 
     public boolean saveMessageDetails(Contact contact) {
@@ -38,5 +43,12 @@ public class ContactService {
         }
         Contact savedContact = repo.save(contact.get());
         return savedContact != null? true : false;
+    }
+
+    public Page findMsgWithOpenStatus(int pageNum, String sortField, String sortDir) {
+        int pageSize = 5;
+        Pageable pageable = PageRequest.of(pageNum-1, pageSize, sortDir.equals("asc")? Sort.by(sortField).ascending(): Sort.by(sortField).descending());
+        Page<Contact> page = contactRepository.findByStatus(EazyByteContants.OPEN, pageable);
+        return page;
     }
 }
