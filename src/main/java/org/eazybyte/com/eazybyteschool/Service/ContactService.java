@@ -33,7 +33,7 @@ public class ContactService {
     }
 
     public List<Contact> getMessages() {
-        return repo.findByStatus(EazyByteContants.OPEN);
+        return repo.findByStatusQuery(EazyByteContants.OPEN);
     }
 
     public boolean closeMessage(int contactId, String name) {

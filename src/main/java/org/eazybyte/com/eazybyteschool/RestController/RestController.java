@@ -23,7 +23,7 @@ public class RestController {
 
     @GetMapping("/getMessageByStatus")
     public List<Contact> getMessageByStatus(@RequestParam String status) {
-        List<Contact> contacts = contactRepository.findByStatus(status);
+        List<Contact> contacts = contactRepository.findByStatusQuery(status);
         return contacts;
     }
 
