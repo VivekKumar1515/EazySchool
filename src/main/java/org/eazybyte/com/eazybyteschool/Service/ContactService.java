@@ -1,5 +1,6 @@
 package org.eazybyte.com.eazybyteschool.Service;
 
+import org.eazybyte.com.eazybyteschool.Config.PropertiesConfiguration;
 import org.eazybyte.com.eazybyteschool.Constants.EazyByteContants;
 import org.eazybyte.com.eazybyteschool.Model.Contact;
 import org.eazybyte.com.eazybyteschool.Repository.ContactRepository;
@@ -19,6 +20,9 @@ public class ContactService {
 
     private final ContactRepository contactRepository;
     ContactRepository repo;
+
+    @Autowired
+    PropertiesConfiguration propertiesConfiguration;
 
     @Autowired
     public ContactService(ContactRepository repo, ContactRepository contactRepository) {
@@ -46,7 +50,10 @@ public class ContactService {
     }
 
     public Page findMsgWithOpenStatus(int pageNum, String sortField, String sortDir) {
-        int pageSize = 5;
+        int pageSize = propertiesConfiguration.getPageSize();
+        if(propertiesConfiguration.getContact() != null && propertiesConfiguration.getContact().get("pageSize") != null) {
+            pageSize = Integer.parseInt(propertiesConfiguration.getContact().get("pageSize").trim());
+        }
         Pageable pageable = PageRequest.of(pageNum-1, pageSize, sortDir.equals("asc")? Sort.by(sortField).ascending(): Sort.by(sortField).descending());
         Page<Contact> page = contactRepository.findByStatus(EazyByteContants.OPEN, pageable);
         return page;

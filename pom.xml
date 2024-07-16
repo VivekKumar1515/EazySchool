@@ -11,6 +11,7 @@
     <groupId>org.eazybyte.com</groupId>
     <artifactId>EazyByteSchool</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>EazyByteSchool</name>
     <description>EazyByteSchool</description>
     <url/>
