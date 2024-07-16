@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/holidays/**").permitAll()
+                        .requestMatchers("/eazyschool/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/contact").permitAll()
                         .requestMatchers("/data-api/**").authenticated()
                         .requestMatchers("/displayMessages/**").hasRole("ADMIN")
