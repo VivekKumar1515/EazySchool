@@ -15,6 +15,7 @@ import java.util.Map;
 @Data
 @ConfigurationProperties(prefix = "eazyschool")
 @Validated
+    //This class is created to showcase the usecase of the @ConfigurationProperties annotations
 public class PropertiesConfiguration {
     @Min(value = 5, message = "the size of the page should be between 5 to 25")
     @Max(value = 25, message = "the size of the page should be between 5 to 25")
