@@ -19,7 +19,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg", "/displayMessages/**", "/closeMsg", "/public/**", "/updateProfile", "REDACTED/**", "/api/contact/**", "/data-api/**"))
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg", "/displayMessages/**", "/closeMsg", "/public/**", "/updateProfile", "admin/**", "/api/contact/**", "/data-api/**"))
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/holidays/**").permitAll()
@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/contact").permitAll()
                         .requestMatchers("/data-api/**").authenticated()
                         .requestMatchers("/displayMessages/**").hasRole("ADMIN")
-                        .requestMatchers("/REDACTED/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/saveMsg").permitAll()
                         .requestMatchers("/student/**").hasRole("STUDENT")
                         .requestMatchers("/courses").permitAll()

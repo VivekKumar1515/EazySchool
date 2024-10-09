@@ -1,3 +1,4 @@
+
 create database eazyschool;
 
 use eazyschool;
@@ -12,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `contact_msg` (
                                              `status` varchar(10) NOT NULL,
                                              `created_at` TIMESTAMP NOT NULL,
                                              `created_by` varchar(50) NOT NULL,
-                                             `updated_at` TIMESTAMP DEFAULT NULL,
+                                             `updated_at` TIMESTAMP NULL,
                                              `updated_by` varchar(50) DEFAULT NULL
 );
 
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `holidays` (
                                           `type` varchar(20) NOT NULL,
                                           `created_at` TIMESTAMP NOT NULL,
                                           `created_by` varchar(50) NOT NULL,
-                                          `updated_at` TIMESTAMP DEFAULT NULL,
+                                          `updated_at` TIMESTAMP NULL,
                                           `updated_by` varchar(50) DEFAULT NULL
 );
 
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
                                        `role_name` varchar(50) NOT NULL,
                                        `created_at` TIMESTAMP NOT NULL,
                                        `created_by` varchar(50) NOT NULL,
-                                       `updated_at` TIMESTAMP DEFAULT NULL,
+                                       `updated_at` TIMESTAMP NULL,
                                        `updated_by` varchar(50) DEFAULT NULL,
                                        PRIMARY KEY (`role_id`)
 );
@@ -45,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `address` (
                                          `zip_code` int NOT NULL,
                                          `created_at` TIMESTAMP NOT NULL,
                                          `created_by` varchar(50) NOT NULL,
-                                         `updated_at` TIMESTAMP DEFAULT NULL,
+                                         `updated_at` TIMESTAMP NULL,
                                          `updated_by` varchar(50) DEFAULT NULL,
                                          PRIMARY KEY (`address_id`)
 );
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `person` (
                                         `address_id` int NULL,
                                         `created_at` TIMESTAMP NOT NULL,
                                         `created_by` varchar(50) NOT NULL,
-                                        `updated_at` TIMESTAMP DEFAULT NULL,
+                                        `updated_at` TIMESTAMP NULL,
                                         `updated_by` varchar(50) DEFAULT NULL,
                                         PRIMARY KEY (`person_id`),
                                         FOREIGN KEY (role_id) REFERENCES roles(role_id),
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `class` (
                                        `name` varchar(100) NOT NULL,
                                        `created_at` TIMESTAMP NOT NULL,
                                        `created_by` varchar(50) NOT NULL,
-                                       `updated_at` TIMESTAMP DEFAULT NULL,
+                                       `updated_at` TIMESTAMP NULL,
                                        `updated_by` varchar(50) DEFAULT NULL,
                                        PRIMARY KEY (`class_id`)
 );

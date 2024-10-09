@@ -55,7 +55,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form th:action="@{/REDACTED/addNewCourse}" method="post" class="signin-form" th:object="${course}">
+                    <form th:action="@{/admin/addNewCourse}" method="post" class="signin-form" th:object="${course}">
                         <div class="modal-body">
                             <div class="input-grids">
                                 <label class="control-label" for="courseName">Course Name</label>
@@ -87,7 +87,7 @@
                 <td th:text="${iterStat.index + 1}"></td>
                 <td th:text="${course.name}"></td>
                 <td th:text="${course.fees}"></td>
-                <td><a th:href="@{/REDACTED/viewStudents(id=${course.courseId})}" class="btn btn-warning">VIEW STUDENTS</a></td>
+                <td><a th:href="@{/admin/viewStudents(id=${course.courseId})}" class="btn btn-warning">VIEW STUDENTS</a></td>
             </tr>
             </tbody>
         </table>

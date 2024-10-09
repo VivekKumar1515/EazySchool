@@ -1,6 +1,6 @@
 <!--
-Author: W3layouts
-Author URL: http://w3layouts.com
+Author: s
+Author URL: http://s.com
 -->
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
@@ -86,7 +86,7 @@ Author URL: http://w3layouts.com
                     </a>
                 </div>
                 <div class="col-sm-6 col-lg-3" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a th:href="@{/REDACTED/displayClasses}">
+                    <a th:href="@{/admin/displayClasses}">
                         <div class="overview-item overview-item--c1">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
@@ -102,7 +102,7 @@ Author URL: http://w3layouts.com
                     </a>
                 </div>
                 <div class="col-sm-6 col-lg-3" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a th:href="@{/REDACTED/displayCourses}">
+                    <a th:href="@{/admin/displayCourses}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">

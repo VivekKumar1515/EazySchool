@@ -56,7 +56,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form th:action="@{/REDACTED/addStudent}" method="post" class="signin-form" th:object="${person}">
+                    <form th:action="@{/admin/addStudent}" method="post" class="signin-form" th:object="${person}">
                         <div class="modal-body">
                             <div class="input-grids">
                                 <label class="control-label" for="email">Student Email </label>
@@ -86,13 +86,13 @@
                 <td th:text="${person.name}"></td>
                 <td th:text="${person.email}"></td>
                 <td th:text="${person.mobileNumber}"></td>
-                <td><a th:href="@{/REDACTED/deleteStudent(personId=${person.personId})}" class="btn btn-warning">DELETE</a></td>
+                <td><a th:href="@{/admin/deleteStudent(personId=${person.personId})}" class="btn btn-warning">DELETE</a></td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="col-md-2 login-center text-start">
-        <a th:href="@{/REDACTED/displayClasses}">
+        <a th:href="@{/admin/displayClasses}">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>
         </a>
     </div>

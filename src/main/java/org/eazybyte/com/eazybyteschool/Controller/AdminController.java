@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller()
-@RequestMapping(value = "/REDACTED")
+@RequestMapping(value = "/admin")
 public class AdminController {
     @Autowired
     ClassesRepository classesRepository;
@@ -43,7 +43,7 @@ public class AdminController {
     @RequestMapping(value = "/addNewClass", method = RequestMethod.POST)
     public String addNewClass(@ModelAttribute(value = "eazyClass") EazyClass eazyClass) {
         classesRepository.save(eazyClass);
-        return "redirect:/REDACTED/displayClasses";
+        return "redirect:/admin/displayClasses";
     }
 
     @RequestMapping(value = "/deleteClass", method = RequestMethod.GET)
@@ -55,7 +55,7 @@ public class AdminController {
         }
 
         classesRepository.delete(eazyClass);
-        return "redirect:/REDACTED/displayClasses";
+        return "redirect:/admin/displayClasses";
     }
 
     @RequestMapping(value = "/displayStudents")
@@ -82,18 +82,18 @@ public class AdminController {
         Person person = personRepository.findByEmail(student.getEmail());
         if(person != null && person.getPersonId() > 0 && person.getRole().getRoleId() != 1) {
             if(person.getEazyclass() != null && person.getEazyclass().getClassId() > 0 && person.getEazyclass().getClassId() != eazyClass.getClassId()) {
-                return "redirect:/REDACTED/displayStudents?classId=" + eazyClass.getClassId() + "&error=3";
+                return "redirect:/admin/displayStudents?classId=" + eazyClass.getClassId() + "&error=3";
             }
             eazyClass.getPerson().add(person);
             classesRepository.save(eazyClass);
             person.setEazyclass(eazyClass);
             personRepository.save(person);
-            return "redirect:/REDACTED/displayStudents?classId=" + eazyClass.getClassId();
+            return "redirect:/admin/displayStudents?classId=" + eazyClass.getClassId();
         } else {
             if(person != null && person.getRole().getRoleId() == 1) {
-                return "redirect:/REDACTED/displayStudents?classId=" + eazyClass.getClassId() + "&error=1";
+                return "redirect:/admin/displayStudents?classId=" + eazyClass.getClassId() + "&error=1";
             }
-            return "redirect:/REDACTED/displayStudents?classId=" + eazyClass.getClassId() + "&error=2";
+            return "redirect:/admin/displayStudents?classId=" + eazyClass.getClassId() + "&error=2";
         }
     }
 
@@ -106,7 +106,7 @@ public class AdminController {
         eazyClass.getPerson().remove(person);
         classesRepository.save(eazyClass);
 
-        return "redirect:/REDACTED/displayStudents?classId=" + eazyClass.getClassId();
+        return "redirect:/admin/displayStudents?classId=" + eazyClass.getClassId();
     }
 
     @RequestMapping(value = "/displayCourses")
@@ -115,13 +115,13 @@ public class AdminController {
         Courses course = new Courses();
         model.addAttribute("courses", courses);
         model.addAttribute("course", course);
-        return "courses_REDACTED.html";
+        return "courses_admin.html";
     }
 
     @RequestMapping(value = "/addNewCourse", method = RequestMethod.POST)
     public String addNewCourse(@ModelAttribute(value = "course") Courses course, Model model, HttpSession session) {
         coursesRepository.save(course);
-        return "redirect:/REDACTED/displayCourses";
+        return "redirect:/admin/displayCourses";
     }
 
     @RequestMapping(value = "/viewStudents")
@@ -145,12 +145,12 @@ public class AdminController {
 
         Person person = personRepository.findByEmail(Student.getEmail());
         if(person == null || !(person.getPersonId() > 0)) {
-            return "redirect:/REDACTED/viewStudents?id=" + course.getCourseId() + "&error=1";
+            return "redirect:/admin/viewStudents?id=" + course.getCourseId() + "&error=1";
         }
         person.getEnrolledCourses().add(course);
         personRepository.save(person);
         session.setAttribute("course", course);
-        return "redirect:/REDACTED/viewStudents?id=" + course.getCourseId();
+        return "redirect:/admin/viewStudents?id=" + course.getCourseId();
     }
     @RequestMapping(value = "deleteStudentFromCourse")
     public String deleteStudentFromCourse(@RequestParam(value = "personId") int personId, Model model, HttpSession session) {
@@ -162,7 +162,7 @@ public class AdminController {
         coursesRepository.save(course);
         session.setAttribute("course", course);
 
-        return "redirect:/REDACTED/viewStudents?id=" + course.getCourseId();
+        return "redirect:/admin/viewStudents?id=" + course.getCourseId();
     }
 
 }
