@@ -59,7 +59,7 @@ mvn spring-boot:run
 
 #### ✉ Register
 ```http
-POST public/createUser
+POST /public/createUser
 ```
 
 #### 🌎 Get all Holidays
