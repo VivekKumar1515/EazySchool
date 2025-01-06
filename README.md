@@ -58,7 +58,7 @@ mvn spring-boot:run
 ## 🔖 API Reference
 
 #### ✉ Register
-```http
+```
 POST public/createUser
 ```
 
